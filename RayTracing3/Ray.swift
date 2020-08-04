@@ -6,7 +6,7 @@
 //
 
 
-typealias float3 = SIMD3<Float>
+
 
 class Ray {
     private var _origin = float3(0,0,0)

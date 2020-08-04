@@ -6,33 +6,22 @@
 //
 
 import Foundation
-import simd
 
-typealias float2 = SIMD2<Float>
-typealias float3 = SIMD3<Float>
-typealias float4 = SIMD4<Float>
-
-let π = Float.pi
-
-func getDocumentsDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    return paths[0]
-}
 
 let filename = getDocumentsDirectory().appendingPathComponent("output2.ppm")
 
-let nx = 200
-let ny = 100
+let row = 400
+let column = 400
 var out = ""
 
-out.append("P3\n\(nx) \(ny)\n255\n")
-for j in stride(from: ny - 1, to: 0, by: -1){
-    for i in stride(from: 0, to: nx, by: 1){
-        let col = float3(Float(i)/Float(nx), Float(j)/Float(ny), 0.2)
-        let ir = Int(255.99*col.x)
-        let ig = Int(255.99*col.y)
-        let ib = Int(255.99*col.z)
-        out.append("\(ir) \(ig) \(ib) \n")
+out.append("P3\n\(row) \(column)\n255\n")
+for i in 0..<row{
+    for j in 0..<column {
+        let color = float3(Float(i)/Float(row), Float(j)/Float(column), 0.5)
+        let r = Int(256*color.x)
+        let g = Int(256*color.y)
+        let b = Int(256*color.z)
+        out.append("\(r) \(g) \(b) \n")
     }
 }
 
@@ -40,6 +29,6 @@ do {
     try out.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
 } catch {
     // failed to write file – bad permissions, bad filename, missing permissions, or more likely it can't be converted to the encoding
-    print("Something went wring with the file")
+    print("Something went wrong with the file")
 }
 
