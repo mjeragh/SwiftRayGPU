@@ -11,7 +11,7 @@ import simd
 func Color(ray r : Ray) -> float3 {
     let unitDirection : float3 = normalize(r.direction)
     let t = 0.5*(unitDirection.y + 1.0)
-    return (1.0 - t) * float3(1.0,1.0,1.0) + t * float3(0.5,0.7,1.0)
+    return (1.0 - t) * float3(0.5,0.7,1.0) + t * float3(0.0,0.2,0.0)
 }
 
 
@@ -25,7 +25,7 @@ let lowerLeftCorner = float3(-4.0,-1.0, 1.0)
 let horizontal = float3(8.0,0.0,0.0)
 let vertical = float3(0.0,4.0,0.0)
 let origin = float3(0.0,0.0,0.0)
-for j in stride(from: (column-1), to: 0, by: -1) {
+for j in 0..<column {
     for i in 0..<row {
         let u = Float(i) / Float(row)
         let v = Float(j) / Float(column)
