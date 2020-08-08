@@ -8,13 +8,13 @@
 import Foundation
 
 
-let filename = getDocumentsDirectory().appendingPathComponent("output2.ppm")
+let filename = getDocumentsDirectory().appendingPathComponent("output.ppm")
 
 let row = 400
 let column = 400
 var out = ""
-
 out.append("P3\n\(row) \(column)\n255\n")
+
 for i in 0..<row{
     for j in 0..<column {
         let color = float3(Float(i)/Float(row), Float(j)/Float(column), 0.5)
