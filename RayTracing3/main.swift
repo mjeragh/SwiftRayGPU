@@ -8,16 +8,19 @@
 import Foundation
 import simd
 
-func Color(ray r : Ray) -> float3 {
+func HemisphericLighting(ray r : Ray) -> float3 {
+    //1 create Unit Vector to compute the intensity
     let unitDirection : float3 = normalize(r.direction)
+    //2 shifting and scaling t in  [0.0, 1.0]
     let t = 0.5*(unitDirection.y + 1.0)
-    return (1.0 - t) * float3(0.5,0.7,1.0) + t * float3(0.0,0.2,0.0)
+    //3 applying lerp
+    return (1.0 - t) * float3(0.34,0.9,1.0) + t * float3(0.29,0.58,0.2)
 }
 
 
 let filename = getDocumentsDirectory().appendingPathComponent("output3.ppm")
-let row = 600
-let column = 400
+let row = 800
+let column = 600
 var out = ""
 out.append("P3\n\(row) \(column)\n255\n")
 
@@ -30,7 +33,7 @@ for j in 0..<column {
         let u = Float(i) / Float(row)
         let v = Float(j) / Float(column)
         let ray = Ray(direction: lowerLeftCorner + u*horizontal + v*vertical)
-        let color = Color(ray: ray)
+        let color = HemisphericLighting(ray: ray)
         let r = Int(256*color.x)
         let g = Int(256*color.y)
         let b = Int(256*color.z)
