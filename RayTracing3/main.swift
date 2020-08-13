@@ -18,28 +18,39 @@ func HemisphericLighting(ray r : Ray) -> float3 {
 }
 
 
+//1 seting the file and size of the picture 800x600
 let filename = getDocumentsDirectory().appendingPathComponent("output3.ppm")
 let row = 800
 let column = 600
 var out = ""
 out.append("P3\n\(row) \(column)\n255\n")
 
+//2 setting the values according to the image above
+
 let lowerLeftCorner = float3(-4.0,-1.0, 1.0)
 let horizontal = float3(8.0,0.0,0.0)
 let vertical = float3(0.0,4.0,0.0)
 let origin = float3(0.0,0.0,0.0)
+
+//3 we will iterate in a 2 dimention and the light the image
+
 for j in 0..<column {
     for i in 0..<row {
+        //4 moving the cursor over the 2D image
         let u = Float(i) / Float(row)
         let v = Float(j) / Float(column)
+        //5 shooting the ray in the dirction of the cursor
         let ray = Ray(direction: lowerLeftCorner + u*horizontal + v*vertical)
         let color = HemisphericLighting(ray: ray)
+        //6 preparing the writing to the ppm file
         let r = Int(256*color.x)
         let g = Int(256*color.y)
         let b = Int(256*color.z)
         out.append("\(r) \(g) \(b) \n")
     }
 }
+
+//7 writing the file
 
 do {
     try out.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
