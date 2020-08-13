@@ -10,7 +10,6 @@
 		B2CBC3B024D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B124D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B224D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
-		B2D9DE1E24CE11CF00D9EDFD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2D9DE1D24CE11CF00D9EDFD /* main.cpp */; };
 		B2D9DE2924CE1B5F00D9EDFD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D9DE2824CE1B5F00D9EDFD /* main.swift */; };
 		B2D9DE2E24CE1B7400D9EDFD /* Ray.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D9DE2D24CE1B7400D9EDFD /* Ray.swift */; };
 		B2FE35A724BDA999001E6254 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FE35A624BDA999001E6254 /* main.swift */; };
@@ -59,7 +58,6 @@
 /* Begin PBXFileReference section */
 		B2CBC3AF24D759A90015A5F5 /* Files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Files.swift; sourceTree = "<group>"; };
 		B2D9DE1B24CE11CF00D9EDFD /* Raycpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Raycpp; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2D9DE1D24CE11CF00D9EDFD /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B2D9DE2624CE1B5F00D9EDFD /* RayTracing3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracing3; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D9DE2824CE1B5F00D9EDFD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B2D9DE2D24CE1B7400D9EDFD /* Ray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ray.swift; sourceTree = "<group>"; };
@@ -109,14 +107,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		B2D9DE1C24CE11CF00D9EDFD /* Raycpp */ = {
-			isa = PBXGroup;
-			children = (
-				B2D9DE1D24CE11CF00D9EDFD /* main.cpp */,
-			);
-			path = Raycpp;
-			sourceTree = "<group>";
-		};
 		B2D9DE2724CE1B5F00D9EDFD /* RayTracing3 */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,7 +122,6 @@
 				B2CBC3AE24D759480015A5F5 /* Common */,
 				B2FE35A524BDA999001E6254 /* RayTracing */,
 				B2FE35B424BE1BEF001E6254 /* R2 */,
-				B2D9DE1C24CE11CF00D9EDFD /* Raycpp */,
 				B2D9DE2724CE1B5F00D9EDFD /* RayTracing3 */,
 				B2FE35A424BDA999001E6254 /* Products */,
 			);
@@ -285,7 +274,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2D9DE1E24CE11CF00D9EDFD /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
