@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B27FD9E924E5A69F00666042 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27FD9E824E5A69F00666042 /* main.swift */; };
+		B27FD9EE24E5A6FD00666042 /* Ray.metal in Sources */ = {isa = PBXBuildFile; fileRef = B27FD9ED24E5A6FD00666042 /* Ray.metal */; };
 		B2CBC3B024D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B124D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B224D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
@@ -17,6 +19,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		B27FD9E424E5A69F00666042 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		B2D9DE1924CE11CF00D9EDFD /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,6 +67,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B27FD9E624E5A69F00666042 /* RayTracingGPU */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracingGPU; sourceTree = BUILT_PRODUCTS_DIR; };
+		B27FD9E824E5A69F00666042 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B27FD9ED24E5A6FD00666042 /* Ray.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Ray.metal; sourceTree = "<group>"; };
 		B2CBC3AF24D759A90015A5F5 /* Files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Files.swift; sourceTree = "<group>"; };
 		B2D9DE1B24CE11CF00D9EDFD /* Raycpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Raycpp; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2D9DE2624CE1B5F00D9EDFD /* RayTracing3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracing3; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +82,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B27FD9E324E5A69F00666042 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2D9DE1824CE11CF00D9EDFD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -99,6 +120,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B27FD9E724E5A69F00666042 /* RayTracingGPU */ = {
+			isa = PBXGroup;
+			children = (
+				B27FD9E824E5A69F00666042 /* main.swift */,
+				B27FD9ED24E5A6FD00666042 /* Ray.metal */,
+			);
+			path = RayTracingGPU;
+			sourceTree = "<group>";
+		};
 		B2CBC3AE24D759480015A5F5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +153,7 @@
 				B2FE35A524BDA999001E6254 /* RayTracing */,
 				B2FE35B424BE1BEF001E6254 /* R2 */,
 				B2D9DE2724CE1B5F00D9EDFD /* RayTracing3 */,
+				B27FD9E724E5A69F00666042 /* RayTracingGPU */,
 				B2FE35A424BDA999001E6254 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -134,6 +165,7 @@
 				B2FE35B324BE1BEF001E6254 /* R2 */,
 				B2D9DE1B24CE11CF00D9EDFD /* Raycpp */,
 				B2D9DE2624CE1B5F00D9EDFD /* RayTracing3 */,
+				B27FD9E624E5A69F00666042 /* RayTracingGPU */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,6 +189,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B27FD9E524E5A69F00666042 /* RayTracingGPU */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B27FD9EA24E5A69F00666042 /* Build configuration list for PBXNativeTarget "RayTracingGPU" */;
+			buildPhases = (
+				B27FD9E224E5A69F00666042 /* Sources */,
+				B27FD9E324E5A69F00666042 /* Frameworks */,
+				B27FD9E424E5A69F00666042 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RayTracingGPU;
+			productName = RayTracingGPU;
+			productReference = B27FD9E624E5A69F00666042 /* RayTracingGPU */;
+			productType = "com.apple.product-type.tool";
+		};
 		B2D9DE1A24CE11CF00D9EDFD /* Raycpp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2D9DE2124CE11CF00D9EDFD /* Build configuration list for PBXNativeTarget "Raycpp" */;
@@ -234,6 +283,9 @@
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					B27FD9E524E5A69F00666042 = {
+						CreatedOnToolsVersion = 12.0;
+					};
 					B2D9DE1A24CE11CF00D9EDFD = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -265,11 +317,21 @@
 				B2FE35B224BE1BEF001E6254 /* R2 */,
 				B2D9DE1A24CE11CF00D9EDFD /* Raycpp */,
 				B2D9DE2524CE1B5F00D9EDFD /* RayTracing3 */,
+				B27FD9E524E5A69F00666042 /* RayTracingGPU */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B27FD9E224E5A69F00666042 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B27FD9EE24E5A6FD00666042 /* Ray.metal in Sources */,
+				B27FD9E924E5A69F00666042 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2D9DE1724CE11CF00D9EDFD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -308,6 +370,28 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		B27FD9EB24E5A69F00666042 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 74MFHC6MWM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B27FD9EC24E5A69F00666042 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 74MFHC6MWM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		B2D9DE1F24CE11CF00D9EDFD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -512,6 +596,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B27FD9EA24E5A69F00666042 /* Build configuration list for PBXNativeTarget "RayTracingGPU" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B27FD9EB24E5A69F00666042 /* Debug */,
+				B27FD9EC24E5A69F00666042 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B2D9DE2124CE11CF00D9EDFD /* Build configuration list for PBXNativeTarget "Raycpp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
