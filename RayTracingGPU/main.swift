@@ -9,32 +9,6 @@ import Foundation
 import MetalKit
 import Accelerate
 
-// https://stackoverflow.com/questions/48008714/how-to-convert-bgra8unorm-ios-metal-texture-to-rgba8unorm-texture
-func makeImage(from texture: MTLTexture) -> NSImage? {
-    let width = texture.width
-    let height = texture.height
-    let bytesPerRow = width * 4
-
-    let data = UnsafeMutableRawPointer.allocate(byteCount: bytesPerRow * height, alignment: 4)
-    defer {
-        data.deallocate()//deallocate(bytes: bytesPerRow * height, alignedTo: 4)
-    }
-
-    let region = MTLRegionMake2D(0, 0, width, height)
-    texture.getBytes(data, bytesPerRow: bytesPerRow, from: region, mipmapLevel: 0)
-
-    var buffer = vImage_Buffer(data: data, height: UInt(height), width: UInt(width), rowBytes: bytesPerRow)
-
-    let map: [UInt8] = [2, 1, 0, 3]
-    vImagePermuteChannels_ARGB8888(&buffer, &buffer, map, 0)
-
-    guard let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) else { return nil }
-    guard let context = CGContext(data: data, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow,
-                                  space: colorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return nil }
-    guard let cgImage = context.makeImage() else { return nil }
-
-    return NSImage(cgImage: cgImage, size: NSSize(width: width, height: height))
-}
 
 
 
@@ -76,12 +50,113 @@ computeEncoder?.popDebugGroup()
 commandBuffer?.commit()
 commandBuffer?.waitUntilCompleted()
 
+//https://computergraphics.stackexchange.com/questions/7428/mtltexture-getbytes-returning-blank-image
+//https://developer.apple.com/forums/thread/30488
+let commandBuffer2 = commandQueue.makeCommandBuffer()
+let blitEncoder = commandBuffer2?.makeBlitCommandEncoder()
+blitEncoder?.synchronize(texture: outputTexture, slice: 0, level: 0)
+blitEncoder?.endEncoding()
+commandBuffer2?.commit()
+commandBuffer2?.waitUntilCompleted()
 
-let  image = CIImage(mtlTexture: outputTexture, options: nil)
-let final = makeImage(from: outputTexture)
 
+
+
+let outImage = makeImage(from: outputTexture)
 
 print("finished")
+
+
+
+// https://stackoverflow.com/questions/48008714/how-to-convert-bgra8unorm-ios-metal-texture-to-rgba8unorm-texture
+func makeImage(from texture: MTLTexture) -> NSImage? {
+    let width = texture.width
+    let height = texture.height
+    let bytesPerRow = width * 4
+
+    let data = UnsafeMutableRawPointer.allocate(byteCount: bytesPerRow * height, alignment: 4)
+    defer {
+        data.deallocate()//deallocate(bytes: bytesPerRow * height, alignedTo: 4)
+    }
+
+    let region = MTLRegionMake2D(0, 0, width, height)
+    texture.getBytes(data, bytesPerRow: bytesPerRow, from: region, mipmapLevel: 0)
+
+    var buffer = vImage_Buffer(data: data, height: UInt(height), width: UInt(width), rowBytes: bytesPerRow)
+
+    let map: [UInt8] = [2, 1, 0, 3]
+    vImagePermuteChannels_ARGB8888(&buffer, &buffer, map, 0)
+
+    guard let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) else { return nil }
+    guard let context = CGContext(data: data, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow,
+                                  space: colorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return nil }
+    guard let cgImage = context.makeImage() else { return nil }
+
+    return NSImage(cgImage: cgImage, size: NSSize(width: width, height: height))
+}
+
+//https://gist.github.com/codelynx/4e56758fb89e94d0d1a58b40ddaade45
+extension MTLTexture {
+
+    #if os(iOS)
+    typealias XImage = UIImage
+    #elseif os(macOS)
+    typealias XImage = NSImage
+    #endif
+
+    var cgImage: CGImage? {
+
+        assert(self.pixelFormat == .bgra8Unorm)
+    
+        // read texture as byte array
+        let rowBytes = self.width * 4
+        let length = rowBytes * self.height
+        let bgraBytes = [UInt8](repeating: 0, count: length)
+        let region = MTLRegionMake2D(0, 0, self.width, self.height)
+        self.getBytes(UnsafeMutableRawPointer(mutating: bgraBytes), bytesPerRow: rowBytes, from: region, mipmapLevel: 0)
+
+        // use Accelerate framework to convert from BGRA to RGBA
+        var bgraBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: bgraBytes),
+                    height: vImagePixelCount(self.height), width: vImagePixelCount(self.width), rowBytes: rowBytes)
+        let rgbaBytes = [UInt8](repeating: 0, count: length)
+        var rgbaBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: rgbaBytes),
+                    height: vImagePixelCount(self.height), width: vImagePixelCount(self.width), rowBytes: rowBytes)
+        let map: [UInt8] = [2, 1, 0, 3]
+        vImagePermuteChannels_ARGB8888(&bgraBuffer, &rgbaBuffer, map, 0)
+
+        // flipping image virtically
+        let flippedBytes = bgraBytes // share the buffer
+        var flippedBuffer = vImage_Buffer(data: UnsafeMutableRawPointer(mutating: flippedBytes),
+                    height: vImagePixelCount(self.height), width: vImagePixelCount(self.width), rowBytes: rowBytes)
+        vImageVerticalReflect_ARGB8888(&rgbaBuffer, &flippedBuffer, 0)
+
+        // create CGImage with RGBA
+        let colorScape = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+        guard let data = CFDataCreate(nil, flippedBytes, length) else { return nil }
+        guard let dataProvider = CGDataProvider(data: data) else { return nil }
+        let cgImage = CGImage(width: self.width, height: self.height, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: rowBytes,
+                    space: colorScape, bitmapInfo: bitmapInfo, provider: dataProvider,
+                    decode: nil, shouldInterpolate: true, intent: .defaultIntent)
+        return cgImage
+    }
+
+    var image: XImage? {
+        guard let cgImage = self.cgImage else { return nil }
+        #if os(iOS)
+        return UIImage(cgImage: cgImage)
+        #elseif os(macOS)
+        return NSImage(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
+        #endif
+    }
+
+}
+
+
+
+
+
+
 // https://www.invasivecode.com/weblog/metal-image-processing
 //func image(from texture: MTLTexture) -> NSImage {
 //
