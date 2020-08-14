@@ -12,6 +12,7 @@ import Accelerate
 
 let start = DispatchTime.now() // <<<<<<<<<< Start time
 
+//1 setting up the GPU
 var device = MTLCreateSystemDefaultDevice()!
 var commandQueue = device.makeCommandQueue()!
 var library = device.makeDefaultLibrary()
@@ -21,30 +22,30 @@ let computeEncoder = commandBuffer?.makeComputeCommandEncoder()
 var computeFunction = library?.makeFunction(name: "kernal_ray")!
 var computePipelineState = try! device.makeComputePipelineState(function: computeFunction!)
 
+//setting the 2 dimention image for the GPU to write
 var outputTexture : MTLTexture
 let row = 800
 let column = 600
-//creating an output texturedescriptor from the input
+//3 creating an output texturedescriptor from the input
 let textureDescriptor = MTLTextureDescriptor()
 textureDescriptor.textureType = .type2D
 textureDescriptor.pixelFormat = .bgra8Unorm
 textureDescriptor.width = row
 textureDescriptor.height = column
-textureDescriptor.usage = [.shaderWrite, .shaderRead]
-
+textureDescriptor.usage = [.shaderWrite]
 outputTexture = device.makeTexture(descriptor: textureDescriptor)!
 
-
+//4 Encoding the command to the GPU
 computeEncoder?.pushDebugGroup("State")
 computeEncoder?.setComputePipelineState(computePipelineState)
 computeEncoder?.setTexture(outputTexture, index: 0)
-
+//5 creating the Threads in a 2 dimension
 var width = computePipelineState.threadExecutionWidth
 var height = computePipelineState.maxTotalThreadsPerThreadgroup / width
 let threadPerThreadgroup = MTLSizeMake(width, height, 1)
 let threadsPerGrid = MTLSizeMake(row, column, 1)
 computeEncoder?.dispatchThreads(threadsPerGrid, threadsPerThreadgroup: threadPerThreadgroup)
-
+//6 Off to the GPU
 computeEncoder?.endEncoding()
 computeEncoder?.popDebugGroup()
 commandBuffer?.commit()
@@ -56,6 +57,9 @@ let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds // <<<<< Differen
 let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
 
 print("Time to execute, without saving the file: \(timeInterval) seconds")
+
+//7 copying the image to cpu memory and saving it to the file.
+//Thanks to all shared their knowledge on the Internet
 
 //https://computergraphics.stackexchange.com/questions/7428/mtltexture-getbytes-returning-blank-image
 //https://developer.apple.com/forums/thread/30488
