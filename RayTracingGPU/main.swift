@@ -10,7 +10,7 @@ import MetalKit
 import Accelerate
 
 
-
+let start = DispatchTime.now() // <<<<<<<<<< Start time
 
 var device = MTLCreateSystemDefaultDevice()!
 var commandQueue = device.makeCommandQueue()!
@@ -50,6 +50,13 @@ computeEncoder?.popDebugGroup()
 commandBuffer?.commit()
 commandBuffer?.waitUntilCompleted()
 
+let end = DispatchTime.now()   // <<<<<<<<<<   end time
+
+let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
+let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
+
+print("Time to execute, without saving the file: \(timeInterval) seconds")
+
 //https://computergraphics.stackexchange.com/questions/7428/mtltexture-getbytes-returning-blank-image
 //https://developer.apple.com/forums/thread/30488
 let commandBuffer2 = commandQueue.makeCommandBuffer()
@@ -63,7 +70,7 @@ commandBuffer2?.waitUntilCompleted()
 
 
 let outImage = makeImage(from: outputTexture)
-
+saveImage(outImage!, atUrl: getDocumentsDirectory().appendingPathComponent("outputGPU.png"))
 print("finished")
 
 
@@ -93,6 +100,24 @@ func makeImage(from texture: MTLTexture) -> NSImage? {
     guard let cgImage = context.makeImage() else { return nil }
 
     return NSImage(cgImage: cgImage, size: NSSize(width: width, height: height))
+}
+
+//https://stackoverflow.com/questions/17507170/how-to-save-png-file-from-nsimage-retina-issues
+func saveImage(_ image: NSImage, atUrl url: URL) {
+    guard
+        let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        else { return } // TODO: handle error
+    let newRep = NSBitmapImageRep(cgImage: cgImage)
+    newRep.size = image.size // if you want the same size
+    guard
+        let pngData = newRep.representation(using: .png, properties: [:])
+        else { return } // TODO: handle error
+    do {
+        try pngData.write(to: url)
+    }
+    catch {
+        print("error saving: \(error)")
+    }
 }
 
 //https://gist.github.com/codelynx/4e56758fb89e94d0d1a58b40ddaade45
@@ -151,9 +176,6 @@ extension MTLTexture {
     }
 
 }
-
-
-
 
 
 

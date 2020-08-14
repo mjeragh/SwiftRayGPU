@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B27FD9E924E5A69F00666042 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27FD9E824E5A69F00666042 /* main.swift */; };
 		B27FD9EE24E5A6FD00666042 /* Ray.metal in Sources */ = {isa = PBXBuildFile; fileRef = B27FD9ED24E5A6FD00666042 /* Ray.metal */; };
+		B27FD9EF24E6F5A700666042 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B024D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B124D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
 		B2CBC3B224D759A90015A5F5 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CBC3AF24D759A90015A5F5 /* Files.swift */; };
@@ -327,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B27FD9EF24E6F5A700666042 /* Files.swift in Sources */,
 				B27FD9EE24E5A6FD00666042 /* Ray.metal in Sources */,
 				B27FD9E924E5A69F00666042 /* main.swift in Sources */,
 			);

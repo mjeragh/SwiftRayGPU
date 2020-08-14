@@ -17,6 +17,7 @@ func HemisphericLighting(ray r : Ray) -> float3 {
     return (1.0 - t) * float3(0.34,0.9,1.0) + t * float3(0.29,0.58,0.2)
 }
 
+let start = DispatchTime.now() // <<<<<<<<<< Start time
 
 //1 seting the file and size of the picture 800x600
 let filename = getDocumentsDirectory().appendingPathComponent("output3.ppm")
@@ -49,6 +50,12 @@ for j in 0..<column {
         out.append("\(r) \(g) \(b) \n")
     }
 }
+let end = DispatchTime.now()   // <<<<<<<<<<   end time
+
+let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
+let timeInterval = Double(nanoTime) / 1_000_000_000 // Technically could overflow for long running tests
+
+print("Time to execute, without saving the file: \(timeInterval) seconds")
 
 //7 writing the file
 
