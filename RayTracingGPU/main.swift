@@ -97,8 +97,8 @@ func makeImage(from texture: MTLTexture) -> NSImage? {
 
     let map: [UInt8] = [2, 1, 0, 3]
     vImagePermuteChannels_ARGB8888(&buffer, &buffer, map, 0)
-
-    guard let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear) else { return nil }
+    //change the color space if the colors dont match, the default CGColorSpace.genericRGBLinear
+    guard let colorSpace = CGColorSpace(name: CGColorSpace.displayP3) else { return nil }
     guard let context = CGContext(data: data, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow,
                                   space: colorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return nil }
     guard let cgImage = context.makeImage() else { return nil }
